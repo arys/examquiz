@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160825084450) do
+ActiveRecord::Schema.define(version: 20160830124200) do
+
+  create_table "answers", force: :cascade do |t|
+    t.string   "text"
+    t.integer  "question_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.boolean  "correct"
+  end
+
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id"
 
   create_table "games", force: :cascade do |t|
     t.string   "creater"
@@ -19,9 +29,24 @@ ActiveRecord::Schema.define(version: 20160825084450) do
     t.integer  "questions"
     t.integer  "creater_scores"
     t.integer  "opponent_scores"
-    t.boolean  "status"
+    t.integer  "status"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string   "text"
+    t.integer  "subject_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "questions", ["subject_id"], name: "index_questions_on_subject_id"
+
+  create_table "subjects", force: :cascade do |t|
+    t.string   "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

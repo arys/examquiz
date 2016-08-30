@@ -11,7 +11,9 @@ class GamesController < ApplicationController
   # GET /games/1.json
   def show
     @game = Game.find(params[:id])
-    gon.watch.game_status = @game.status
+    if @game.status == 0
+      gon.watch.game_status = @game.status
+    end
   end
 
   # GET /games/new
@@ -75,6 +77,25 @@ class GamesController < ApplicationController
       format.html { redirect_to games_url, notice: 'Game was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def q2change
+    session[:quiz] = 'q2'
+    redirect_to @game
+  end
+
+  def q3change
+    session[:quiz] = 'q3'
+    redirect_to @game
+  end
+
+  def q4change
+    session[:quiz] = 'q4'
+    redirect_to @game
+  end
+  def finish
+    'asdsad'
+    redirect_to @game
   end
 
   private

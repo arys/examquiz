@@ -1,4 +1,18 @@
-<h3><%= link_to 'Создать игру', new_game_path, class: 'new_game_link' %></h3>
+<% creater_validate_question %>
+<% case session[:quiz] %>
+<% when 'q1' then %>
+	<%= render 'timer' %>
+<% when 'q2' then %>
+	<%= render 'timer2' %>
+<% when 'q3' then %>
+	<%= render 'timer3' %>
+<% when 'q4' then %>
+	<%= render 'timer4' %>
+<% when 'finish' then%>
+	<%= render 'finish' %>
+<% else%>
+	<%= asdasdasdasd %>
+<% end %>
 <%= simple_form_for :q, {url: 'pages/valid'} do |f| %>
 
 	<% @a.each do |q| %>
