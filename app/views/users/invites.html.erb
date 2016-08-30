@@ -1,0 +1,7 @@
+<% if @invites  %>
+	<% @invites.each do |i| %>
+		<h4>Приглашение от <%= i.creater %><%= link_to ' Войти игру',game_path(i) %></h4>
+	<% end %>
+<% else %>
+	<h4>У вас еще нет приглашении</h4>
+<% end %>
