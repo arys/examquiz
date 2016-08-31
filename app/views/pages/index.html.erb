@@ -1,19 +1,2 @@
 <h3><%= link_to 'Создать игру', new_game_path, class: 'new_game_link' %></h3>
-<%= simple_form_for :q, {url: 'pages/valid'} do |f| %>
-
-	<% @a.each do |q| %>
-		<%= f.label q.subject.text %><br>
-		<%= f.label q.text %>
-
-			<% q.answers.each do |a| %>
-				<div id="answer">
-					<%= f.radio_button(:answer, a.correct) %>
-					<%= f.label(:answer, a.text) %>
-				</div>
-			<% end %>
-	<div id="button">
-		<%= f.button :submit, "Ответить" %>
-	</div>
-	<% end %>
-
-<% end %>
+<%= request.original_url %>

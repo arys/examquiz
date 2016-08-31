@@ -15,7 +15,8 @@ module GamesHelper
 	end
 
 	def opponent
-		@text = "I`m opponent"
+		@game.update_attribute(:questions, rand(1000..9999))
+		render 'creater_question_form'
 	end
 
 	def creater_validate_question
@@ -25,24 +26,18 @@ module GamesHelper
 		@questions = @game.questions.to_s.split("")
 		case session[:quiz]
 		 when 'q1'
-		 	@question_num = questions[1].to_i
+		 	@question_num = Question.find(@questions[0].to_i)
 		 when 'q2'
-		 	@question_num = questions[2].to_i
+		 	@question_num = Question.find(@questions[1].to_i)
 		 when 'q3'
-		 	@question_num = questions[3].to_i
+		 	@question_num = Question.find(@questions[2].to_i)
 		 when 'q4'
-		 	@question_num = questions[4].to_i
+		 	@question_num = Question.find(@questions[3].to_i)
+		 when 'finish'
+		 	flash[:notice] = 'Игра окончена'
 		 else
-		 	flash.notice[:error] = 'Упс что-то пошло не так начните игру заново'
-		 	redirect_to my_games_path
+		 	flash[:error] = 'Упс что-то пошло не так начните игру заново'
+		 	controller.redirect_to my_games_path
 		 end
-	end
-
-	def valid_answer
-		if params[:q][:answer] == true
-			@score = @game.creater_scores
-			@game.update_attribute(:@game.creater_scores, @score  += 1)
-			controller.redirect_to @game
-		end
 	end
 end

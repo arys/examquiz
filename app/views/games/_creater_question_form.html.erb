@@ -1,25 +1,10 @@
 <% creater_validate_question %>
-<% case session[:quiz] %>
-<% when 'q1' then %>
+<% if session[:quiz] != 'finish' %>
 	<%= render 'timer' %>
-<% when 'q2' then %>
-	<%= render 'timer2' %>
-<% when 'q3' then %>
-	<%= render 'timer3' %>
-<% when 'q4' then %>
-	<%= render 'timer4' %>
-<% when 'finish' then%>
-	<%= render 'finish' %>
-<% else%>
-	<%= asdasdasdasd %>
-<% end %>
-<%= simple_form_for :q, {url: 'pages/valid'} do |f| %>
-
-	<% @a.each do |q| %>
-		<%= f.label q.subject.text %><br>
-		<%= f.label q.text %>
-
-			<% q.answers.each do |a| %>
+	<%= simple_form_for :q, {url: request.original_url + '/valid'} do |f| %>
+		<%= f.label @question_num.subject.text %><br>
+		<%= f.label @question_num.text %>
+			<% @question_num.answers.each do |a| %>
 				<div id="answer">
 					<%= f.radio_button(:answer, a.correct) %>
 					<%= f.label(:answer, a.text) %>
@@ -29,5 +14,9 @@
 		<%= f.button :submit, "Ответить" %>
 	</div>
 	<% end %>
-
+<% else %>
+	<%= @game.creater_scores %>
+	<%= @game.opponent_scores%>
+	<% controller.reset_session %>
+	<% @game.destroy %>
 <% end %>

@@ -1,1 +1,8 @@
-<%= validates %>
+<% if @game.status == 1 %>
+	<%= validates %>
+<% else %>
+<%= current_user.username %>
+	<div id="game_status">
+		
+	</div>
+<% end %>

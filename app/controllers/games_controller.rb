@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :edit, :update, :destroy]
+  before_action :set_game, only: [:show, :edit, :update, :destroy, :valid_answer]
   before_action :signed_in_user, only: [:edit, :update, :new, :index]
   # GET /games
   # GET /games.json
@@ -10,9 +10,31 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
-    @game = Game.find(params[:id])
+    if @game.opponent == current_user.username
+      @game.update_attribute(:status, 1)
+    end
     if @game.status == 0
       gon.watch.game_status = @game.status
+    end
+  end
+
+  def valid_answer
+    if defined?(params[:q][:answer])
+      if params[:q][:answer] == true
+        @score = @game.creater_scores
+        @game.update_attribute(:creater_scores, @score  += 1)
+        flash[:notice] = 'Правильно'
+        session_change
+        redirect_to @game
+      else
+        flash[:error] = 'Неправильно'
+        session_change
+        redirect_to @game
+      end
+    else
+      flash[:error] = 'Не успел'
+      session_change
+      redirect_to @game
     end
   end
 
@@ -79,25 +101,6 @@ class GamesController < ApplicationController
     end
   end
 
-  def q2change
-    session[:quiz] = 'q2'
-    redirect_to @game
-  end
-
-  def q3change
-    session[:quiz] = 'q3'
-    redirect_to @game
-  end
-
-  def q4change
-    session[:quiz] = 'q4'
-    redirect_to @game
-  end
-  def finish
-    'asdsad'
-    redirect_to @game
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_game
@@ -136,6 +139,22 @@ class GamesController < ApplicationController
         c_user.update_attribute(:status, 1)
         flash.now[:error] = 'Нету свободных пользователей'
         render :new
+      end
+    end
+
+    def session_change
+      case session[:quiz]
+      when 'q1'
+        session[:quiz] = 'q2'
+      when 'q2'
+        session[:quiz] = 'q3'
+      when 'q3'
+        session[:quiz] = 'q4'
+      when 'q4'
+        session[:quiz] = 'finish'
+      else
+        flash[:error] = 'Упс, что-то пошло не так'
+        redirect_to my_games_path
       end
     end
 end

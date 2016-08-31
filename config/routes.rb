@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   resources :games
-  resources :controllers
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
 
@@ -11,17 +10,13 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'pages#index'
+  root 'users#new'
   # Example of regular route:
   get 'invites' => 'users#invites'
   get 'my_games' => 'users#my_games'
-  post 'pages/valid' => 'pages#valid'
   get 'pages/new' => 'pages#new'
 
-  get 'games/q2' => 'games#q2change'
-  get 'games/q3' => 'games#q3change'
-  get 'games/q4' => 'games#q4change'
-  get 'games/finish' => 'games#finish'
+  match 'games/:id/valid/' => 'games#valid_answer', via: [:get, :post]
   # Example of named route that can be invoked with purchase_url(id: product.id)
   #   get 'products/:id/purchase' => 'catalog#purchase', as: :purchase
 
