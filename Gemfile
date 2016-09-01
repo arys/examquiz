@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem "rails_12factor", group: :production
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.7'
 # Use SCSS for stylesheets
@@ -64,3 +64,4 @@ group :development do
   gem 'spring'
 end
 
+ruby "2.3.0"
